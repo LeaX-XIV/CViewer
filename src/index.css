@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: "Ubuntu", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -10,4 +10,227 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.content table tr th, .content table tr td {
+  text-align: center;
+  border: 1px solid black;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 11mm 17mm 17mm 17mm;
+  @bottom-center {width: 100%; content: element(footer)}
+}
+
+@media print {
+
+  .content {
+    page-break-inside: avoid;
+  }
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+}
+
+
+
+.photo + .content {
+  align-self: center;
+}
+
+.footer {
+  left: 0;
+  width: 100%;
+  position: running(footer);
+  height: auto;
+  margin-bottom: 0px;
+}
+
+.subtitle.left {
+  font-weight: bold;
+}
+
+.visible {
+  margin-bottom: 5em;
+  display: block;
+}
+
+.section-title {
+  width: 100%;
+  font-size: 1.5rem;
+  font-variant-caps: all-small-caps;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  align-content: flex-end;
+  flex-wrap: wrap;
+  flex-direction: column-reverse;
+  color: blueviolet;
+  /* margin-top: 18px; */
+}
+
+.section-title>* {
+  display: inherit;
+  padding-right: 0.5em;
+}
+
+.section-title .title {
+  text-align: end;
+  /* width: 30%; */
+  height: 100%;
+  margin-right: 70%;
+}
+
+.section-title .hr {
+  position: absolute;
+  width: -webkit-fill-available !important;
+  border-bottom: 2.5px solid;
+  padding-left: 0.3em !important;
+  padding-right: 1em;
+  height: 1em;
+  margin-left: 30%;
+}
+
+.document-title {
+  width: 100%;
+  margin-bottom: 18px;
+  font-size: 1.75rem;
+  /* display: inline-block; */
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column-reverse;
+  color: blueviolet;
+}
+
+.document-title>* {
+  display: inherit;
+  padding-right: 0.5em;
+}
+
+.document-title .title {
+  text-align: start;
+  width: auto;
+  margin-left: 30%;
+  max-lines: 1;
+  overflow: hidden;
+  max-width: fit-content;
+  margin-left: 30%;
+}
+
+.document-title .hr {
+  position: absolute;
+  width: -webkit-fill-available !important;
+  border-bottom: 2.5px solid;
+  float: left;
+  margin-left: -30%;
+  margin-top: -0.3em;
+  margin-left: 30%;
+}
+
+span.tabulation{
+  margin-left: 40px;
+}
+
+.date-range, .date {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+/* .date-range>* {
+  margin-left: 1ch;
+} */
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.container .left {
+  padding: 1em 0.5em 1em 1em;
+  position: relative;
+  width: 30%;
+  box-sizing: inherit;
+  height: 100%;
+  text-align: end;
+}
+
+.container .right {
+  padding-left: 0.5em;
+  position: relative;
+  width: 70%;
+  box-sizing: inherit;
+  text-align: start;
+}
+
+.container .right.content {
+  /* margin-left: 1em; */
+  padding: 1em;
+}
+
+img.icon {
+  height: 1.3rem;
+  margin-right: 5px;
+}
+
+img.filter-blueviolet {
+  filter: invert(23%) sepia(99%) saturate(5395%) hue-rotate(268deg) brightness(92%) contrast(92%);
+}
+
+.icon-group {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+.photo {
+  padding: 2em;
+  width: auto;
+}
+
+.separator {
+  margin-right: 1ex;
+}
+
+.comma::before {
+  content: ",";
+}
+
+.dash::before {
+  content: "-";
+  margin-left: 1ex;
+}
+
+.colon::before {
+  content: ":";
+}
+
+.tab::before {
+  content: "";
+  margin-left: 5ex;
+}
+
+.note {
+  font-size: small;
 }
