@@ -125,13 +125,13 @@ const Anagraphic = ({anagraphic}) => {
           <ConditionalComponent show={telephoneNumber}>
             <div className="icon-group" id="telephone-number">
               <img className="icon filter-blueviolet" src="./icons/phone.svg" alt="phone icon" /> 
-              <span>{telephoneNumber}</span>
+              <a href={`tel:${telephoneNumber}`}>{telephoneNumber}</a>
             </div>
           </ConditionalComponent>
           <ConditionalComponent show={mobileNumber}>
             <div className="icon-group" id="mobile-number">
               <img className="icon filter-blueviolet" src="./icons/mobilephone.svg" alt="mobile phone icon" /> 
-              <span>{mobileNumber}</span>
+              <a href={`tel:${mobileNumber}`}>{mobileNumber}</a>
             </div>
           </ConditionalComponent>
         </div>
