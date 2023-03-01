@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: "Ubuntu", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -95,7 +95,10 @@ a {
 
 .section-title .hr {
   position: absolute;
+  width: 100% !important;
   width: -webkit-fill-available !important;
+  width: -moz-available !important;
+  width: stretch !important;
   border-bottom: 2.5px solid;
   padding-left: 0.3em !important;
   padding-right: 1em;
@@ -134,7 +137,10 @@ a {
 
 .document-title .hr {
   position: absolute;
+  width: 100% !important;
   width: -webkit-fill-available !important;
+  width: -moz-available !important;
+  width: stretch !important;
   border-bottom: 2.5px solid;
   float: left;
   margin-left: -30%;
