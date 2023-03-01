@@ -46,8 +46,6 @@ a {
   }
 }
 
-
-
 .photo + .content {
   align-self: center;
 }
@@ -153,10 +151,6 @@ span.tabulation{
   flex-direction: row;
   justify-content: flex-end;
 }
-
-/* .date-range>* {
-  margin-left: 1ch;
-} */
 
 .container {
   box-sizing: border-box;

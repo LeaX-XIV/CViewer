@@ -17,6 +17,7 @@ const terms = {
 
 		gender: "Gender",
 		nationality: "Nationality",
+		ongoing: "ongoing",
 		grade: "Grade",
 		thesis: "Thesis",
 		abstract: "Abstract",
@@ -53,6 +54,7 @@ const terms = {
 		privacyPolicy: "I declare that I read the privacy statement on the processing of my personal data and my rights within the meaning of the General Data Protection Regulation (EU Regulation 2016/679) and Legislative decree no.196 of 30th June 2003 (Code regarding the protection of personal data). I hereby give my consent to the processing of my personal data included in my CV."
 	},
 	"it": {
+		// cSpell: disable
 		languageString: "Italiano",
 
 		education: "Istruzione",
@@ -68,6 +70,7 @@ const terms = {
 
 		gender: "Sesso",
 		nationality: "Nazionalità",
+		ongoing: "in corso",
 		grade: "Voto",
 		thesis: "Tesi",
 		abstract: "Abstract",
@@ -103,6 +106,7 @@ const terms = {
 		relocateAbroad: "Disponibilità a trasferimenti (all''estero)",
 		privacyPolicy: "Ho preso visione dell'informativa completa riguardante la modalità di trattamento dei dati da me forniti e i diritti a me spettanti ai sensi del GDPR (Regolamento UE 2016/679) e del Decreto Legislativo 30 giugno 2003, n. 196 “Codice in materia di protezione dei dati personali” e autorizzo il trattamento dei miei dati personali presenti nel CV."
 	}
+	// cSpell: enable
 };
 
 const DictionaryContext = createContext({

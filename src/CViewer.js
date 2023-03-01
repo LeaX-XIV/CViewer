@@ -1,8 +1,14 @@
-import { formatDate, orderNumbersDesc } from "./utils";
+import { orderNumbersDesc } from "./utils";
 
 import { useContext } from "react";
+
+import { Separator } from "./components/Separator";
+import { DocumentTitle, SectionTitle } from "./components/Title";
+
 import DictionaryContext from './context/DictionaryContext';
 import LanguageContext from './context/LanguageContext';
+import { ConditionalComponent } from "./components/ConditionalComponent";
+import { DateRange } from "./components/DateRange";
 
 const CViewer = ({cv}) => {
   return <>
@@ -23,24 +29,6 @@ const CViewer = ({cv}) => {
   </>;
 }
 
-const DocumentTitle = ({title}) => {
-  return <div className="document-title">
-    <div className="title">{title}</div>
-    <div className="hr"/>
-  </div>;
-}
-
-const SectionTitle = ({title}) => {
-  return <div className="section-title">
-    <div className="title">{title}</div>
-    <div className="hr"/>
-  </div>;
-}
-
-const Separator = ({type}) => {
-  return <span className={`separator ${type}`} />
-}
-
 const Anagraphic = ({anagraphic}) => {
   const dictionary = useContext(DictionaryContext);
   const lang = useContext(LanguageContext);
@@ -54,12 +42,12 @@ const Anagraphic = ({anagraphic}) => {
   const nationality = anagraphic.nationality || undefined;
   const photo = anagraphic.photo || undefined;
   const address = {};
-  address.address = anagraphic.address.address || undefined;
-  address.door = anagraphic.address.door || undefined;
-  address.city = anagraphic.address.city || undefined;
-  address.province = anagraphic.address.province || undefined;
-  address.country = anagraphic.address.country || undefined;
-  address.zipCode = anagraphic.address.zipCode || undefined;
+  address.address = anagraphic?.address?.address || undefined;
+  address.door = anagraphic?.address?.door || undefined;
+  address.city = anagraphic?.address?.city || undefined;
+  address.province = anagraphic?.address?.province || undefined;
+  address.country = anagraphic?.address?.country || undefined;
+  address.zipCode = anagraphic?.address?.zipCode || undefined;
   const telephoneNumber = anagraphic.telephoneNumber || undefined;
   const mobileNumber = anagraphic.mobileNumber || undefined;
   const emails = typeof anagraphic.emails === String ? [anagraphic.emails] :
@@ -70,96 +58,103 @@ const Anagraphic = ({anagraphic}) => {
   return <div className="section">
     <DocumentTitle title={`${firstName} ${middleNames.join(" ")} ${lastName.toUpperCase()}`} />
     <div className="container">
-      { photo ? <img className="left photo" id="photo" src={photo} alt="mugshot" /> : <></> }
+      <ConditionalComponent show={photo}>
+        <img className="left photo" id="photo" src={photo} alt="mugshot" />
+      </ConditionalComponent>
       <div className="content right">
-        {/* <div id="name">
-          <span id="lastName">{`${lastName.toUpperCase()} `}</span>
-          <span id="middleNames">{middleNames.map((n, i) => <span id={`middle-name-${i}`} key={`middle-name-${i}`}>{n} </span>)}</span>
-          <span id="firstName">{firstName}</span>
-        </div> */}
-        { gender ? 
+        <ConditionalComponent show={gender}>
           <div id="gender">
             <span>{dictionary.getTerm(lang, "gender")}</span><Separator type="colon" /><span>{gender}</span>
-          </div> : <></>
-        }
-        { nationality ? 
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={nationality}>
           <div id="nationality">
             <span>{dictionary.getTerm(lang, "nationality")}</span><Separator type="colon" /><span>{nationality}</span>
-          </div> : <></> }
+          </div>
+        </ConditionalComponent>
         <div id="birth">
-          { dateOfBirth ? <><span id="date-of-birth">{new Date(dateOfBirth).toLocaleDateString(undefined, {year: "numeric", month: "short", day: "numeric"})}</span><Separator type="tab" /></> : <></> }
-          { placeOfBirth ? <span id="place-of-birth">{placeOfBirth}</span> : <></> }
+          <ConditionalComponent show={dateOfBirth}>
+            <span id="date-of-birth">
+              {new Date(dateOfBirth).toLocaleDateString(undefined, {year: "numeric", month: "short", day: "numeric"})}
+            </span>
+            <ConditionalComponent show={placeOfBirth}>
+              <Separator type="tab" />
+            </ConditionalComponent>
+          </ConditionalComponent>
+          <ConditionalComponent show={placeOfBirth}>
+            <span id="place-of-birth">{placeOfBirth}</span>
+          </ConditionalComponent>
         </div>
         <div id="contact-info">
-          { address ?
-            <>
-              <div className="icon-group" id="address">
-                <img className="icon filter-blueviolet" src="./icons/address.svg" alt="address icon" /> 
-                { address.address ? 
-                  <>
-                    <span>{address.address}</span>
+          <ConditionalComponent show={address && (address.zipCode || address.city || address.province || address.country)}>
+            <div className="icon-group" id="address">
+              <img className="icon filter-blueviolet" src="./icons/address.svg" alt="address icon" /> 
+              <ConditionalComponent show={address.address}>
+                <span>{address.address}</span>
+                <ConditionalComponent show={address.door}>
+                  <Separator type="comma" />
+                  <span>{address.door}</span> 
+                </ConditionalComponent>
+              </ConditionalComponent>
+              <ConditionalComponent show={address.zipCode || address.city || address.province || address.country}>
+                <Separator type="tab" />
+                <ConditionalComponent show={address.zipCode}>
+                  <span id="zipCode">{address.zipCode}</span>
+                  <ConditionalComponent show={address.city || address.province || address.country}>
                     <Separator type="comma" />
-                    { address.door ? 
-                      <span>{address.door}</span> : 
-                      <></> 
-                    }
-                    <Separator />
-                    <Separator />
-                  </> : 
-                  <></> 
-                }
-                { address.zipCode ? 
-                    <span id="zipCode">{address.zipCode}</span> : 
-                    <></>
-                }
-                <Separator type="comma" />
-                { address.city ? <span id="city">{address.city}</span> : <></> }
-                <Separator />
-                { address.province ? <span id="province">{address.city ? `(${address.province})` : address.province}</span> : <></> }
-                <Separator />
-                { address.country ? <span id="country">{address.country}</span> : <></> }
-                </div>
-            </> :
-            <></>
-          }
-          { telephoneNumber ? 
-              <div className="icon-group" id="telephone-number">
-                <img className="icon filter-blueviolet" src="./icons/phone.svg" alt="phone icon" /> 
-                <span>{telephoneNumber}</span>
-              </div> :
-              <></>
-          }
-          { mobileNumber ? 
-              <div className="icon-group" id="mobile-number">
-                <img className="icon filter-blueviolet" src="./icons/mobilephone.svg" alt="mobile phone icon" /> 
-                <span>{mobileNumber}</span>
-              </div> : 
-              <></>
-          }
+                  </ConditionalComponent>
+                  <ConditionalComponent show={address.city}>
+                    <span id="city">{address.city}</span>
+                    <ConditionalComponent show={address.province || address.country}>
+                      <Separator />
+                    </ConditionalComponent>
+                  </ConditionalComponent>
+                  <ConditionalComponent show={address.province}>
+                    <span id="province">{address.city ? `(${address.province})` : address.province}</span>
+                    <ConditionalComponent show={address.country}>
+                      <Separator />
+                    </ConditionalComponent>
+                  </ConditionalComponent>
+                  <ConditionalComponent show={address.country}>
+                    <span id="country">{address.country}</span>
+                  </ConditionalComponent>
+                </ConditionalComponent>
+              </ConditionalComponent>
+            </div>
+          </ConditionalComponent>
+          <ConditionalComponent show={telephoneNumber}>
+            <div className="icon-group" id="telephone-number">
+              <img className="icon filter-blueviolet" src="./icons/phone.svg" alt="phone icon" /> 
+              <span>{telephoneNumber}</span>
+            </div>
+          </ConditionalComponent>
+          <ConditionalComponent show={mobileNumber}>
+            <div className="icon-group" id="mobile-number">
+              <img className="icon filter-blueviolet" src="./icons/mobilephone.svg" alt="mobile phone icon" /> 
+              <span>{mobileNumber}</span>
+            </div>
+          </ConditionalComponent>
         </div>
-        { emails.length > 0 ? 
+        <ConditionalComponent show={emails && emails.length > 0}>
           <div className="icon-group" id="emails">
             <img className="icon filter-blueviolet" src="./icons/mail.svg" alt="email icon" /> 
             <div>
               { emails.map((e, i) => <div id={`email-${i}`} key={`email-${i}`}><a href={`mailto:${e}`}>{e}</a></div>) }
             </div>
-          </div> : 
-          <></>
-        }
-        { website ? 
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={website}>
           <div className="icon-group" id="website">
             <img className="icon filter-blueviolet" src="./icons/website.svg" alt="website icon" /> 
             <a href={`${website}`} target="_blank" rel="noreferrer">{website}</a>
-          </div> :
-          <></>
-        }
-        { linkedin ? 
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={linkedin}>
           <div className="icon-group" id="linkedin">
             <img className="icon filter-blueviolet" src="./icons/linkedin.svg" alt="linkedin icon" /> 
             <a href={`https://linkedin.com/in/${linkedin}`} target="_blank" rel="noreferrer">{linkedin}</a>
-          </div> :
-          <></>
-        }
+          </div>
+        </ConditionalComponent>
       </div>
     </div>
   </div>;
@@ -171,119 +166,114 @@ const Education = ({education}) => {
 
   const Diploma = ({diploma}) => {
     return <>
-      { diploma.startDate && diploma.endDate ?
-        <div className="date-range left">
-          <div className="date">{formatDate(diploma.startDate)}</div>
-          <Separator type="dash" />
-          <div className="date">{formatDate(diploma.endDate)}</div>
-        </div> :
-        diploma.endDate ?
-        <div className="date left">{formatDate(diploma.endDate)}</div> :
-        <></>
-      }
+      <div className="left">
+        <DateRange start={diploma.startDate} end={diploma.endDate} />
+      </div>
       <div className="content right">
-        { diploma.title ?
-          <div id="diploma-title">{diploma.title}</div> :
-          <></>
-        }
-        { diploma.grade ?
+        <ConditionalComponent show={diploma.title}>
+          <div id="diploma-title">{diploma.title}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={diploma.grade}>
           <div id="diploma-grade">
-            <span>{dictionary.getTerm(lang, "grade")}</span><Separator type="colon" /><span>{diploma.grade}</span>
-          </div> :
-          <></>
-        }
+            <span>{dictionary.getTerm(lang, "grade")}</span>
+            <Separator type="colon" />
+            <span>{diploma.grade}</span>
+          </div>
+        </ConditionalComponent>
       </div>
     </>;
   }
 
   const Degree = ({degree}) => {
     return <>
-      { degree.startDate && degree.endDate ?
-        <div className="date-range left">
-          <div className="date">{formatDate(degree.startDate)}</div>
-          <Separator type="dash" />
-          <div className="date">{formatDate(degree.endDate)}</div>
-        </div> :
-        degree.endDate ?
-        <div className="date left">{formatDate(degree.endDate)}</div> :
-        <></>
-      }
+      <div className="left">
+        <DateRange start={degree.startDate} end={degree.endDate} />
+      </div>
       <div className="content right">
-        { degree.courseOfStudy ?
-          <div id="degree-course-of-study">{degree.courseOfStudy}</div> :
-          <></>
-        }
-        { degree.location ?
-          <div id="degree-location">{degree.location}</div> :
-          <></>
-        }
-        { degree.thesis ?
+        <ConditionalComponent show={degree.courseOfStudy}>
+          <div id="degree-course-of-study">{degree.courseOfStudy}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={degree.location}>
+          <div id="degree-location">{degree.location}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={degree.thesis}>
           <div id="thesis">
-            { degree.thesis.title ? 
-              <div id="thesis-title"><span>{dictionary.getTerm(lang, "thesis")}</span><Separator type="colon" /><span>{degree.thesis.title}</span></div> :
-              <></>
-            }
-            { degree.thesis.abstract ? 
-              <div id="thesis-abstract"><span>{dictionary.getTerm(lang, "abstract")}</span><Separator type="colon" /><span>{degree.thesis.abstract}</span></div> :
-              <></>
-            }
-            { degree.thesis.supervisors && degree.thesis.supervisors.length > 0 ? 
-              <div id="thesis-supervisors">
-                {degree.thesis.supervisors.length === 1 ? <span>{dictionary.getTerm(lang, "supervisor")}</span> : <span>{dictionary.getTerm(lang, "supervisors")}</span>}
+            <ConditionalComponent show={degree.thesis?.title}>
+              <div id="thesis-title">
+                <span>{dictionary.getTerm(lang, "thesis")}</span>
                 <Separator type="colon" />
-                { degree.thesis.supervisors.map((e, i) => 
-                  <span 
-                    id={`thesis-supervisor-${i}`}
-                    key={`thesis-supervisor-${i}`}>
-                      {e}
-                  </span>
-                ) }
-              </div> : 
-              <></>
-            }
-          </div> :
-          <></>
-        }
-        { degree.grade ?
-          <div id="degree-grade">
-            <span>{dictionary.getTerm(lang, "grade")}</span><Separator type="colon" /><span>{degree.grade}</span>
-          </div> :
-          <></>
-        }
-        { degree.otherInfo ?
-          <div id="degree-other-info">{degree.otherInfo}</div> :
-          <></>
-        }
+                <span>{degree.thesis?.title}</span>
+              </div>
+            </ConditionalComponent>
+            <ConditionalComponent show={degree.thesis?.abstract}>
+              <div id="thesis-abstract">
+                <span>{dictionary.getTerm(lang, "abstract")}</span>
+                <Separator type="colon" />
+                <span>{degree.thesis?.abstract}</span>
+              </div>
+            </ConditionalComponent>
+            <ConditionalComponent show={degree.thesis?.supervisors && degree.thesis.supervisors?.length > 0}>
+              <div id="thesis-supervisors">
+                {
+                  degree.thesis?.supervisors?.length === 1 ? 
+                    <span>{dictionary.getTerm(lang, "supervisor")}</span> : 
+                    <span>{dictionary.getTerm(lang, "supervisors")}</span>
+                }
+                <Separator type="colon" />
+                { 
+                  degree.thesis?.supervisors || []
+                    .map((e, i) => 
+                      <span 
+                        id={`thesis-supervisor-${i}`}
+                        key={`thesis-supervisor-${i}`}>
+                          {e}
+                      </span>
+                    )
+                }
+              </div>
+            </ConditionalComponent>
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={degree.grade}>
+        <div id="degree-grade">
+          <span>{dictionary.getTerm(lang, "grade")}</span>
+          <Separator type="colon" />
+          <span>{degree.grade}</span>
+        </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={degree.otherInfo}>
+          <div id="degree-other-info">{degree.otherInfo}</div>
+        </ConditionalComponent>
       </div>
     </>;
   }
 
   const middleSchoolDiploma = education.middleSchoolDiploma ? {} : undefined;
-  if (middleSchoolDiploma) {
+  if (education.middleSchoolDiploma) {
     middleSchoolDiploma.title = education.middleSchoolDiploma.title || undefined;
-    middleSchoolDiploma.startDate = education.middleSchoolDiploma.startDate ? new Date(education.middleSchoolDiploma.startDate) : undefined;
-    middleSchoolDiploma.endDate = education.middleSchoolDiploma.endDate ? new Date(education.middleSchoolDiploma.endDate) : undefined;
+    middleSchoolDiploma.startDate = education.middleSchoolDiploma.startDate || undefined;
+    middleSchoolDiploma.endDate = education.middleSchoolDiploma.endDate || undefined;
     middleSchoolDiploma.grade = education.middleSchoolDiploma.grade || undefined;
   }
   const highSchoolDiploma = education.highSchoolDiploma ? {} : undefined;
-  if (highSchoolDiploma) {
+  if (education.highSchoolDiploma) {
     highSchoolDiploma.title = education.highSchoolDiploma.title || undefined;
-    highSchoolDiploma.startDate = education.highSchoolDiploma.startDate ? new Date(education.highSchoolDiploma.startDate) : undefined;
-    highSchoolDiploma.endDate = education.highSchoolDiploma.endDate ? new Date(education.highSchoolDiploma.endDate) : undefined;
+    highSchoolDiploma.startDate = education.highSchoolDiploma.startDate || undefined;
+    highSchoolDiploma.endDate = education.highSchoolDiploma.endDate || undefined;
     highSchoolDiploma.grade = education.highSchoolDiploma.grade || undefined;
   }
   const universityDegrees = education.universityDegrees.map(d => {
     let degree = {};
     degree.studentNumber = d.studentNumber || undefined;
-    degree.startDate = d.startDate ? new Date(d.startDate) : undefined;
-    degree.endDate = d.endDate ? new Date(d.endDate) : undefined;
+    degree.startDate = d.startDate || undefined;
+    degree.endDate = d.endDate || undefined;
     degree.courseOfStudy = d.courseOfStudy || undefined;
     degree.location = d.location || undefined;
     degree.thesis = d.thesis ? {} : undefined;
     if (degree.thesis) {
       degree.thesis.title = d.thesis.title || undefined;
       degree.thesis.abstract = d.thesis.abstract || undefined;
-      degree.thesis.supervisors = typeof d.thesis.supervisors === String ?
+      degree.thesis.supervisors = typeof d.thesis.supervisors === 'string' ?
                     [d.thesis.supervisors] : d.thesis.supervisors;
     }
     degree.grade = d.grade || undefined;
@@ -295,13 +285,20 @@ const Education = ({education}) => {
   return <div className="section">
     <SectionTitle title={dictionary.getTerm(lang, "education")} />
     <div className="container">
-      { universityDegrees.sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
-        .map((e, i) => 
-          <Degree degree={e} key={`university-degree-${i}`} />
-        )
-      }
-      { highSchoolDiploma ? <Diploma diploma={highSchoolDiploma} /> : <></> }
-      { middleSchoolDiploma ? <Diploma diploma={middleSchoolDiploma} /> : <></> }
+      <ConditionalComponent show={universityDegrees && universityDegrees.length > 0}>
+        { 
+          universityDegrees
+            .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
+            .map((d, i) => <Degree key={`university-degree-${i}`} degree={d} />
+            )
+        }
+      </ConditionalComponent>
+      <ConditionalComponent show={highSchoolDiploma}>
+        <Diploma diploma={highSchoolDiploma} />
+      </ConditionalComponent>
+      <ConditionalComponent show={middleSchoolDiploma}>
+        <Diploma diploma={middleSchoolDiploma} />
+      </ConditionalComponent>
     </div>
   </div>;
 }
@@ -311,8 +308,8 @@ const Training = ({trainings}) => {
   const lang = useContext(LanguageContext);
 
   const Training = ({training}) => {
-    const startDate = training.startDate ? new Date(training.startDate) : undefined;
-    const endDate = training.endDate ? new Date(training.endDate) : undefined;
+    const startDate = training.startDate || undefined;
+    const endDate = training.endDate || undefined;
     const duration = training.duration || undefined;
     const description = training.description || undefined;
     const company = training.company || undefined;
@@ -322,74 +319,59 @@ const Training = ({trainings}) => {
 
     return <>
       <div className="left">
-      { startDate && endDate ?
-        <div className="date-range">
-          <div className="date">{formatDate(startDate)}</div>
-          <Separator type="dash" />
-          <div className="date">{formatDate(endDate)}</div>
-        </div> :
-        endDate ?
-        <div className="date">{formatDate(endDate)}</div> :
-        <></>
-      }
-      { duration ? 
+      <DateRange start={startDate} end={endDate} />
+      <ConditionalComponent show={duration}>
         <div id="training-duration">
-          { endDate ? <span>{`(${duration})`}</span> : <span>{duration}</span> }
-        </div> :
-        <></>
-      }
+          {
+            endDate ?
+              <span>{`(${duration})`}</span> :
+              <span>{duration}</span>
+          }
+        </div>
+      </ConditionalComponent>
       </div>
       <div className="content right">
-        { description ?
-          <div id="training-description">{description}</div> :
-          <></>
-        }
-        { company ?
-          <span id="training-company">{company}</span> :
-          <></>
-        }
-        { location ?
-          <>
-            {company ? <Separator type="dash" /> : <></> }
-            <span id="training-location">{location}</span>
-          </> :
-          <></>
-        }
-        { country ? 
-          <>
-            { company || location ? <Separator type="dash" /> : <></> }
-            <span id="training-country">{country}</span>
-          </> :
-          <></>
-        }
-        { certification ?
+        <ConditionalComponent show={description}>
+          <div id="training-description">{description}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={company}>
+          <span id="training-company">{company}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={location}>
+          <ConditionalComponent show={company}>
+            <Separator type="dash" />
+          </ConditionalComponent>
+          <span id="training-location">{location}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={country}>
+          <ConditionalComponent show={company || location}>
+            <Separator type="dash" />
+          </ConditionalComponent>
+          <span id="training-country">{country}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={certification}>
           <div id="training-certification">
-            <span>{dictionary.getTerm(lang, "certificationObtained")}</span><Separator type="colon" /><span>{certification}</span>
-          </div> :
-          <></>
-        }
+            <span>{dictionary.getTerm(lang, "certificationObtained")}</span>
+            <Separator type="colon" />
+            <span>{certification}</span>
+          </div>
+        </ConditionalComponent>
       </div>
     </>;
   }
 
-  if (trainings.length > 0) {
-    return <div className="section">
+  return <ConditionalComponent show={trainings.length > 0}>
+    <div className="section">
       <SectionTitle title={dictionary.getTerm(lang, "training")} />
       <div className="container">
-        { trainings
+        { 
+          trainings
             .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
-            .map((t, i) => 
-              <Training
-                key={`training-${i}`}
-                training={t}
-              />
-            )
+            .map((t, i) => <Training key={`training-${i}`} training={t} />)
         }
       </div>
-    </div>;
-  } else {
-    return <></>;
-  }
+    </div>
+  </ConditionalComponent>
 }
 
 const InternationalExperiences = ({internationalExperiences}) => {
@@ -397,8 +379,8 @@ const InternationalExperiences = ({internationalExperiences}) => {
   const lang = useContext(LanguageContext);
 
   const InternationalExperience = ({experience}) => {
-    const startDate = experience.startDate ? new Date(experience.startDate) : undefined;
-    const endDate = experience.endDate ? new Date(experience.endDate) : undefined;
+    const startDate = experience.startDate || undefined;
+    const endDate = experience.endDate || undefined;
     const programme = experience.programme || undefined;
     const institute = experience.institute || undefined;
     const location = experience.location || undefined;
@@ -406,67 +388,52 @@ const InternationalExperiences = ({internationalExperiences}) => {
     const description = experience.description || undefined;
 
     return <>
-      { startDate && endDate ?
-        <div className="date-range left">
-          <div className="date">{formatDate(startDate)}</div>
-          <Separator type="dash" />
-          <div className="date">{formatDate(endDate)}</div>
-        </div> :
-        endDate ?
-        <div className="date left">{formatDate(endDate)}</div> :
-        <></>
-      }
+      <div className="left">
+        <DateRange start={startDate} end={endDate} />
+      </div>
       <div className="content right">
-        { programme ?
-          <div id="international-experience-programme">{programme}</div> :
-          <></>
-        }
-        { institute ?
-          <span id="international-experience-institute">{institute}</span> :
-          <></>
-        }
-        { location ?
-          <>
-            {institute ? <Separator type="dash" /> : <></> }
-            <span id="international-experience-location">{location}</span>
-          </> :
-          <></>
-        }
-        { country ? 
-          <>
-            { institute || location ? <Separator type="dash" /> : <></> }
-            <span id="international-experience-country">{country}</span>
-          </> :
-          <></>
-        }
-        { description ?
-          <div id="international-experience-description">
-            <span>{description}</span>
-          </div> :
-          <></>
-        }
+        <ConditionalComponent show={programme}>
+          <div id="international-experience-programme">{programme}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={institute}>
+          <span id="international-experience-institute">{institute}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={location}>
+          <ConditionalComponent show={institute}>
+            <Separator type="dash" />
+          </ConditionalComponent>
+          <span id="training-location">{location}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={country}>
+          <ConditionalComponent show={institute || location}>
+            <Separator type="dash" />
+          </ConditionalComponent>
+          <span id="training-country">{country}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={description}>
+          <div className="note" id="international-experience-description">{description}</div>
+        </ConditionalComponent>
       </div>
     </>;
   }
 
-  if (internationalExperiences.length > 0) {
-    return <div className="section">
+  return <ConditionalComponent show={internationalExperiences.length > 0}>
+    <div className="section">
       <SectionTitle title={dictionary.getTerm(lang, "internationalExperiences")} />
       <div className="container">
-        { internationalExperiences
+        { 
+          internationalExperiences
             .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
             .map((e, i) => 
-              <InternationalExperience
+              <InternationalExperience 
                 key={`international-experience-${i}`}
                 experience={e}
-                />
+              />
             )
         }
       </div>
-    </div>;
-  } else {
-    return <></>;
-  }
+    </div>
+  </ConditionalComponent>
 }
 
 const ProfessionalExperiences = ({professionalExperiences}) => {
@@ -474,8 +441,8 @@ const ProfessionalExperiences = ({professionalExperiences}) => {
   const lang = useContext(LanguageContext);
 
   const ProfessionalExperience = ({experience}) => {
-    const startDate = experience.startDate ? new Date(experience.startDate) : undefined;
-    const endDate = experience.endDate ? new Date(experience.endDate) : undefined;
+    const startDate = experience.startDate || undefined;
+    const endDate = experience.endDate || undefined;
     const relationship = experience.relationship || undefined;
     const company = experience.company || undefined;
     const location = experience.location || undefined;
@@ -484,73 +451,55 @@ const ProfessionalExperiences = ({professionalExperiences}) => {
     const description = experience.description || undefined;
 
     return <>
-      { startDate && endDate ?
-        <div className="date-range left">
-          <div className="date">{formatDate(startDate)}</div>
-          <Separator type="dash" />
-          <div className="date">{formatDate(endDate)}</div>
-        </div> :
-        endDate ?
-        <div className="date left">{formatDate(endDate)}</div> :
-        <></>
-      }
+      <div className="left">
+        <DateRange start={startDate} end={endDate} />
+      </div>
       <div className="content right">
-        { jobTitle ?
-          <div id="professional-experience-programme">{jobTitle}</div> :
-          <></>
-        }
-        { company ?
-          <span id="professional-experience-institute">{company}</span> :
-          <></>
-        }
-        { location ?
-          <>
-            {company ? <Separator type="dash" /> : <></> }
-            <span id="professional-experience-location">{location}</span>
-          </> :
-          <></>
-        }
-        { country ? 
-          <>
-            { company || location ? <Separator type="dash" /> : <></> }
-            <span id="professional-experience-country">{country}</span>
-          </> :
-          <></>
-        }
-        { description ?
-          <div id="professional-experience-description">
-            <span>{description}</span>
-          </div> :
-          <></>
-        }
-        { relationship ?
-          <div id="professional-experience-relationship">
-            <span>{relationship}</span>
-          </div> :
-          <></>
-        }
+        <ConditionalComponent show={jobTitle}>
+          <div id="professional-experience-programme">{jobTitle}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={company}>
+          <span id="professional-experience-institute">{company}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={location}>
+          <ConditionalComponent show={company}>
+            <Separator type="dash" />
+          </ConditionalComponent>
+          <span id="training-location">{location}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={country}>
+          <ConditionalComponent show={company || location}>
+            <Separator type="dash" />
+          </ConditionalComponent>
+          <span id="training-country">{country}</span>
+        </ConditionalComponent>
+        <ConditionalComponent show={description}>
+          <div id="professional-experience-description">{description}</div>
+        </ConditionalComponent>
+        <ConditionalComponent show={relationship}>
+          <div id="professional-experience-relationship">{relationship}</div>
+        </ConditionalComponent>
       </div>
     </>;
   }
 
-    if (professionalExperiences.length > 0) {
-      return <div className="section">
+  return <ConditionalComponent show={professionalExperiences.length > 0}>
+    <div className="section">
         <SectionTitle title={dictionary.getTerm(lang, "professionalExperiences")} />
         <div className="container">
-        { professionalExperiences
+        { 
+          professionalExperiences
             .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
             .map((e, i) => 
               <ProfessionalExperience
                 key={`professional-experience-${i}`}
                 experience={e}
-                />
+              />
             )
         }
       </div>
-    </div>;
-    } else {
-      return <></>;
-    }
+    </div>
+  </ConditionalComponent>
 }
 
 const LanguageSkills = ({languageSkills}) => {
@@ -571,7 +520,7 @@ const LanguageSkills = ({languageSkills}) => {
   const certifications = languageSkills.certifications.map(c => {
     let cert = {};
     cert.language = c.language || undefined;
-    cert.year = parseInt(c.year) || undefined;
+    cert.date = c.date || undefined;
     cert.certificate = c.certificate || undefined;
     cert.grade = c.grade || undefined;
     return cert;
@@ -582,7 +531,7 @@ const LanguageSkills = ({languageSkills}) => {
       return <></>;
     }
 
-    return <>
+    return <ConditionalComponent show={otherLangs.length > 0}>
       <div className="subtitle left">{dictionary.getTerm(lang, "otherLanguages")}</div>
       <div className="content right" style={{paddingBottom: "0px"}}>
         <table>
@@ -639,36 +588,47 @@ const LanguageSkills = ({languageSkills}) => {
           </tbody>
         </table>
         <div className="note">{dictionary.getTerm(lang, "languageLevelsDescriptor")}</div>
-        <div className="note"><a href="https://europass.cedefop.europa.eu/resources/european-language-levels-cefr">{dictionary.getTerm(lang, "referenceLanguage")}</a></div>
+        <div className="note"><a target="_blank" rel="noreferrer noopener" href="https://europass.cedefop.europa.eu/resources/european-language-levels-cefr">{dictionary.getTerm(lang, "referenceLanguage")}</a></div>
       </div>
-    </>;
+    </ConditionalComponent>;
   }
 
   return <div className="section">
     <SectionTitle title={dictionary.getTerm(lang, "languageSkills")} />
     <div className="container">
-      { first ? <><div className="subtitle left">{dictionary.getTerm(lang, "firstLanguage")}</div><div className="content right" id="first-language">{first}</div></> : <></> }
+      <ConditionalComponent show={first}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "firstLanguage")}</div>
+          <div className="content right" id="first-language">{first}</div>
+      </ConditionalComponent>
       <OtherLanguagesTable otherLangs={other} />
-      { certifications && certifications.length > 0 ?
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "certifications")}</div><div className="content right"></div>
-              { 
-                certifications
-                  .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
-                  .map((c, i) => {
-                    return <div className="container" key={`certification-${i}`}>
-                      { c.year ? <div className="date left" id="certification-year">{c.year}</div> : <></> }
-                      <div className="content right">
-                        { c.certificate ? <span id="certification-certificate">{c.certificate}</span> : <span id="certification-language">{c.language}</span> }
-                        { c.grade ? <><Separator type="colon" /><span id="certification-grade">{c.grade}</span></> : <></> }
-                      </div>
-                    </div>
-                  })
-              }
-          </> :
-          <></>
-      }
-  </div>
+      <ConditionalComponent show={certifications && certifications.length > 0}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "certifications")}</div><div className="content right"></div>
+        { 
+          certifications
+            .sort((a, b) => orderNumbersDesc(a.date, b.date))
+            .map((c, i) =>
+              <div className="container" key={`certification-${i}`}>
+                <ConditionalComponent show={c.date}>
+                  <div className="left">
+                    <DateRange end={c.date} />
+                  </div>
+                </ConditionalComponent>
+                <div className="content right">
+                  { 
+                    c.certificate ?
+                      <span id="certification-certificate">{c.certificate}</span> :
+                      <span id="certification-language">{c.language}</span>
+                  }
+                  <ConditionalComponent show={c.grade}>
+                    <Separator type="colon" />
+                    <span id="certification-grade">{c.grade}</span>
+                  </ConditionalComponent>
+                </div>
+              </div>
+            )
+        }
+      </ConditionalComponent>
+    </div>
   </div>;
 }
 
@@ -716,119 +676,87 @@ const ComputerSkills = ({computerSkills}) => {
   return <div className="section">
     <SectionTitle title={dictionary.getTerm(lang, "computerSkills")} />
     <div className="container">
-      { 
-        operatingSystems ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "operatingSystem")}</div>
-            <div className="content right">
-              <div id="operating-system-skills-description">{operatingSystems.description}</div>
-              <div id="operating-system-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{operatingSystems.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        programmingLanguages ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "programmingLanguage")}</div>
-            <div className="content right">
-              <div id="programming-language-skills-description">{programmingLanguages.description}</div>
-              <div id="programming-language-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{programmingLanguages.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        software ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "software")}</div>
-            <div className="content right">
-              <div id="software-skills-description">{software.description}</div>
-              <div id="software-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{software.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        database ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "database")}</div>
-            <div className="content right">
-              <div id="database-skills-description">{database.description}</div>
-              <div id="database-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{database.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        cad ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "cad")}</div>
-            <div className="content right">
-              <div id="cad-skills-description">{cad.description}</div>
-              <div id="cad-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{cad.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        graphics ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "graphics")}</div>
-            <div className="content right">
-              <div id="graphics-skills-description">{graphics.description}</div>
-              <div id="graphics-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{graphics.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        spreadsheet ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "spreadsheet")}</div>
-            <div className="content right">
-              <div id="spreadsheet-skills-description">{spreadsheet.description}</div>
-              <div id="spreadsheet-skills-level">
-                <span>{dictionary.getTerm(lang, "level")}</span>
-                <Separator type="colon" />
-                <span>{spreadsheet.level}</span>
-              </div>
-            </div>
-          </> : 
-          <></>
-      }
-      { 
-        other ? 
-          <>
-            <div className="subtitle left">{dictionary.getTerm(lang, "other")}</div>
-            <div className="content right" id="other-skills-description">{other}</div>
-          </> : 
-          <></>
-      }
+      <ConditionalComponent show={operatingSystems}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "operatingSystem")}</div>
+        <div className="content right">
+          <div id="operating-system-skills-description">{operatingSystems?.description}</div>
+          <div id="operating-system-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{operatingSystems?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={programmingLanguages}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "programmingLanguage")}</div>
+        <div className="content right">
+          <div id="programming-language-skills-description">{programmingLanguages?.description}</div>
+          <div id="programming-language-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{programmingLanguages?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={software}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "software")}</div>
+        <div className="content right">
+          <div id="software-skills-description">{software?.description}</div>
+          <div id="software-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{software?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={database}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "database")}</div>
+        <div className="content right">
+          <div id="database-skills-description">{database?.description}</div>
+          <div id="database-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{database?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={cad}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "cad")}</div>
+        <div className="content right">
+          <div id="cad-skills-description">{cad?.description}</div>
+          <div id="cad-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{cad?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={graphics}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "graphics")}</div>
+        <div className="content right">
+          <div id="graphics-skills-description">{graphics?.description}</div>
+          <div id="graphics-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{graphics?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={spreadsheet}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "spreadsheet")}</div>
+        <div className="content right">
+          <div id="spreadsheet-skills-description">{spreadsheet?.description}</div>
+          <div id="spreadsheet-skills-level">
+            <span>{dictionary.getTerm(lang, "level")}</span>
+            <Separator type="colon" />
+            <span>{spreadsheet?.level}</span>
+          </div>
+        </div>
+      </ConditionalComponent>
+      <ConditionalComponent show={other}>
+        <div className="subtitle left">{dictionary.getTerm(lang, "other")}</div>
+        <div className="content right" id="other-skills-description">{other}</div>
+      </ConditionalComponent>
     </div>
   </div>;
 }
@@ -837,19 +765,15 @@ const PersonalSkills = ({personalSkills}) => {
   const dictionary = useContext(DictionaryContext);
   const lang = useContext(LanguageContext);
 
-  return <>
-    {
-      personalSkills ? 
-        <div className="section">
-          <SectionTitle title={dictionary.getTerm(lang, "personalSkills")} />
-          <div className="container">
-            <div className="left"></div>
-            <div className="content right" id="personal-skills">{personalSkills}</div>
-          </div>
-        </div> :
-        <></>
-    }
-  </>
+  return <ConditionalComponent show={personalSkills}>
+    <div className="section">
+      <SectionTitle title={dictionary.getTerm(lang, "personalSkills")} />
+      <div className="container">
+        <div className="left"></div>
+        <div className="content right" id="personal-skills">{personalSkills}</div>
+      </div>
+    </div>
+  </ConditionalComponent>;
 }
 
 const OtherInfo = ({otherInfo}) => {
@@ -865,36 +789,70 @@ const OtherInfo = ({otherInfo}) => {
   const professionalLicenses = otherInfo.professionalLicenses ?
     otherInfo.professionalLicenses.map(l => {
       const license = {};
-      license.year = l.year || undefined;
+      license.date = l.date || undefined;
       license.description = l.description || undefined;
       return license;
     }) : [];
   // const attachedFiles = otherInfo.attachedFiles || undefined;
 
-  return <>
-    {
-      drivingLicense || useOwnVehicle || businessTravelItaly || relocateItaly || businessTravelAbroad || relocateAbroad || professionalLicenses ?
-        <div className="section">
-          <SectionTitle title={dictionary.getTerm(lang, "otherInfo")} />
-          <div className="container">
-            { drivingLicense ? <><div className="left"></div><div className="content right" id="driving-license">{dictionary.getTerm(lang, "drivingLicense")}</div></> : <></> }
-            { useOwnVehicle ? <><div className="left"></div><div className="content right" id="use-own-vehicle">{dictionary.getTerm(lang, "useOwnVehicle")}</div></> : <></> }
-            { businessTravelItaly ? <><div className="left"></div><div className="content right" id="business-travel-italy">{dictionary.getTerm(lang, "businessTravelItaly")}</div></> : <></> }
-            { relocateItaly ? <><div className="left"></div><div className="content right" id="relocate-italy">{dictionary.getTerm(lang, "relocateItaly")}</div></> : <></> }
-            { businessTravelAbroad ? <><div className="left"></div><div className="content right" id="business-travel-abroad">{dictionary.getTerm(lang, "businessTravelAbroad")}</div></> : <></> }
-            { relocateAbroad ? <><div className="left"></div><div className="content right" id="relocate-abroad">{dictionary.getTerm(lang, "relocateAbroad")}</div></> : <></> }
-            { professionalLicenses.map((l, i) => 
-                <div key={`professional-license-${i}`}>
-                  <div className="left">{l.year}</div>
-                  <div classNeme="content right">{l.description}</div>
-                </div>
-              )
-            }
+  return <ConditionalComponent show={drivingLicense       ||
+                                     useOwnVehicle        ||
+                                     businessTravelItaly  ||
+                                     relocateItaly        ||
+                                     businessTravelAbroad ||
+                                     relocateAbroad       ||
+                                     professionalLicenses  }
+          >
+    <div className="section">
+      <SectionTitle title={dictionary.getTerm(lang, "otherInfo")} />
+      <div className="container">
+        <ConditionalComponent show={drivingLicense}>
+          <div className="left" />
+          <div className="content right" id="driving-license">
+            {dictionary.getTerm(lang, "drivingLicense")}
           </div>
-        </div> : 
-        <></>
-    }
-  </>;
+        </ConditionalComponent>
+        <ConditionalComponent show={useOwnVehicle}>
+          <div className="left" />
+          <div className="content right" id="use-own-vehicle">
+            {dictionary.getTerm(lang, "useOwnVehicle")}
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={businessTravelItaly}>
+          <div className="left" />
+          <div className="content right" id="business-travel-italy">
+            {dictionary.getTerm(lang, "businessTravelItaly")}
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={relocateItaly}>
+          <div className="left" />
+          <div className="content right" id="relocate-italy">
+            {dictionary.getTerm(lang, "relocateItaly")}
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={businessTravelAbroad}>
+          <div className="left" />
+          <div className="content right" id="business-travel-abroad">
+            {dictionary.getTerm(lang, "businessTravelAbroad")}
+          </div>
+        </ConditionalComponent>
+        <ConditionalComponent show={relocateAbroad}>
+          <div className="left" />
+          <div className="content right" id="relocate-abroad">
+            {dictionary.getTerm(lang, "relocateAbroad")}
+          </div>
+        </ConditionalComponent>
+        { 
+          professionalLicenses.map((l, i) => 
+            <div key={`professional-license-${i}`}>
+              <div className="left"><DateRange end={l.date} /></div>
+              <div className="content right">{l.description}</div>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </ConditionalComponent>;
 }
 
 const Publications = ({publications}) => {
