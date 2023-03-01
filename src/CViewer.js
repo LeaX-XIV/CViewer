@@ -68,7 +68,7 @@ const Anagraphic = ({anagraphic}) => {
   const linkedin = anagraphic.linkedin || undefined;
 
   return <div className="section">
-    <DocumentTitle title={`${firstName} ${lastName.toUpperCase()}`} />
+    <DocumentTitle title={`${firstName} ${middleNames.join(" ")} ${lastName.toUpperCase()}`} />
     <div className="container">
       { photo ? <img className="left photo" id="photo" src={photo} alt="mugshot" /> : <></> }
       <div className="content right">
@@ -869,7 +869,7 @@ const OtherInfo = ({otherInfo}) => {
       license.description = l.description || undefined;
       return license;
     }) : [];
-  const attachedFiles = otherInfo.attachedFiles || undefined;
+  // const attachedFiles = otherInfo.attachedFiles || undefined;
 
   return <>
     {
