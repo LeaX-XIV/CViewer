@@ -40,6 +40,8 @@ const DateRange = ({start, end}) => {
           </div>
         </div>
     }
+
+    return <></>;
 }
 
 export { DateRange };
