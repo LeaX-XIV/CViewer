@@ -13,7 +13,7 @@ import { DateRange } from "./components/DateRange";
 const CViewer = ({cv}) => {
   return <>
     <div className="visible">
-      <Anagraphic anagraphic={cv.anagraphic} />
+      <PersonalInfo personalInfo={cv.personalInfo} />
       <Education education={cv.education} />
       <Training trainings={cv.trainings} />
       <InternationalExperiences internationalExperiences={cv.internationalExperiences} />
@@ -29,31 +29,31 @@ const CViewer = ({cv}) => {
   </>;
 }
 
-const Anagraphic = ({anagraphic}) => {
+const PersonalInfo = ({personalInfo}) => {
   const dictionary = useContext(DictionaryContext);
   const lang = useContext(LanguageContext);
 
-  const firstName = anagraphic.firstName || undefined;
-  const middleNames = anagraphic.middleNames ? anagraphic.middleNames.split(/\s+/) : [];
-  const lastName = anagraphic.lastName || undefined;
-  const gender = anagraphic.gender || undefined;
-  const dateOfBirth = anagraphic.dateOfBirth || undefined;
-  const placeOfBirth = anagraphic.placeOfBirth || undefined;
-  const nationality = anagraphic.nationality || undefined;
-  const photo = anagraphic.photo || undefined;
+  const firstName = personalInfo.firstName || undefined;
+  const middleNames = personalInfo.middleNames ? personalInfo.middleNames.split(/\s+/) : [];
+  const lastName = personalInfo.lastName || undefined;
+  const gender = personalInfo.gender || undefined;
+  const dateOfBirth = personalInfo.dateOfBirth || undefined;
+  const placeOfBirth = personalInfo.placeOfBirth || undefined;
+  const nationality = personalInfo.nationality || undefined;
+  const photo = personalInfo.photo || undefined;
   const address = {};
-  address.address = anagraphic?.address?.address || undefined;
-  address.door = anagraphic?.address?.door || undefined;
-  address.city = anagraphic?.address?.city || undefined;
-  address.province = anagraphic?.address?.province || undefined;
-  address.country = anagraphic?.address?.country || undefined;
-  address.zipCode = anagraphic?.address?.zipCode || undefined;
-  const telephoneNumber = anagraphic.telephoneNumber || undefined;
-  const mobileNumber = anagraphic.mobileNumber || undefined;
-  const emails = typeof anagraphic.emails === String ? [anagraphic.emails] :
-           anagraphic.emails;
-  const website = anagraphic.website || undefined;
-  const linkedin = anagraphic.linkedin || undefined;
+  address.address = personalInfo?.address?.address || undefined;
+  address.door = personalInfo?.address?.door || undefined;
+  address.city = personalInfo?.address?.city || undefined;
+  address.province = personalInfo?.address?.province || undefined;
+  address.country = personalInfo?.address?.country || undefined;
+  address.zipCode = personalInfo?.address?.zipCode || undefined;
+  const telephoneNumber = personalInfo.telephoneNumber || undefined;
+  const mobileNumber = personalInfo.mobileNumber || undefined;
+  const emails = typeof personalInfo.emails === String ? [personalInfo.emails] :
+           personalInfo.emails;
+  const website = personalInfo.website || undefined;
+  const linkedin = personalInfo.linkedin || undefined;
 
   return <div className="section">
     <DocumentTitle title={`${firstName} ${middleNames.join(" ")} ${lastName.toUpperCase()}`} />
