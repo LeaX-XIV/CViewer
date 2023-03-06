@@ -210,7 +210,11 @@ img.filter-blueviolet {
 }
 
 .separator {
-  margin-right: 1ex;
+  margin-right: 0.3em;
+}
+
+.period::before {
+  content: ".";
 }
 
 .comma::before {
@@ -219,7 +223,7 @@ img.filter-blueviolet {
 
 .dash::before {
   content: "-";
-  margin-left: 1ex;
+  margin-left: 0.3em;
 }
 
 .colon::before {
@@ -228,7 +232,7 @@ img.filter-blueviolet {
 
 .tab::before {
   content: "";
-  margin-left: 5ex;
+  margin-left: 2em;
 }
 
 .note {
