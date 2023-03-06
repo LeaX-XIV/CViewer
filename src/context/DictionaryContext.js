@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 const terms = {
-	"en": {
+	"en-EN": {
 		languageString: "English",
 
 		education: "Education",
@@ -57,7 +57,7 @@ const terms = {
 		isbn: "ISBN",
 		privacyPolicy: "I declare that I read the privacy statement on the processing of my personal data and my rights within the meaning of the General Data Protection Regulation (EU Regulation 2016/679) and Legislative decree no.196 of 30th June 2003 (Code regarding the protection of personal data). I hereby give my consent to the processing of my personal data included in my CV."
 	},
-	"it": {
+	"it-IT": {
 		// cSpell: disable
 		languageString: "Italiano",
 

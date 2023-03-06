@@ -31,7 +31,7 @@ const PersonalInfo = ({ personalInfo }) => {
         <div id="birth">
           <ConditionalComponent show={personalInfo?.dateOfBirth}>
             <span id="date-of-birth">
-              {new Date(personalInfo?.dateOfBirth)?.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}
+              {new Date(personalInfo?.dateOfBirth)?.toLocaleDateString(lang, { year: "numeric", month: "short", day: "numeric" })}
             </span>
             <ConditionalComponent show={personalInfo?.placeOfBirth}>
               <Separator type="tab" />
