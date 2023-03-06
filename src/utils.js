@@ -55,4 +55,13 @@ function extractYear(date) {
   return d.getFullYear();
 }
 
-export { formatDate, orderNumbersDesc, isYear, extractYear };
+/**
+ * Returns a new string, with the first character capitalized.
+ * @param {string} str - String to be capitalized.
+ * @returns {string} str with the first character capitalized
+ */
+function capitalize(str) {
+  return str[0].toUpperCase() + str.substring(1);
+}
+
+export { formatDate, orderNumbersDesc, isYear, extractYear, capitalize };

@@ -1,4 +1,4 @@
-import { orderNumbersDesc } from "../utils";
+import { orderNumbersDesc, capitalize } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -42,7 +42,14 @@ const Training = ({startDate, endDate, duration, description, company, location,
   const lang = useContext(LanguageContext);
 
   if (!description) {
-    return <></>;
+    return <>
+      <div className="left"></div>
+      <div className="content right error">
+        { dictionary.getTerm(lang, "error") }
+        <Separator type="colon" />
+        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+      </div>
+    </>;
   }
 
   return <>

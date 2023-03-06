@@ -1,4 +1,4 @@
-import { orderNumbersDesc } from "../utils";
+import { orderNumbersDesc, capitalize } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -58,7 +58,14 @@ const Degree = ({ studentNumber, startDate, endDate, courseOfStudy, location, th
   const lang = useContext(LanguageContext);
 
   if (!courseOfStudy) {
-    return <></>;
+    return <>
+      <div className="left"></div>
+      <div className="content right error">
+        { dictionary.getTerm(lang, "error") }
+        <Separator type="colon" />
+        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+      </div>
+    </>;
   }
 
   return <>
@@ -96,7 +103,14 @@ const Thesis = ({title, abstract, supervisors, }) => {
   const lang = useContext(LanguageContext);
 
   if (!title) {
-    return <></>;
+    return <>
+      <div className="left"></div>
+      <div className="content right error">
+        { dictionary.getTerm(lang, "error") }
+        <Separator type="colon" />
+        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+      </div>
+    </>;
   }
 
   return <div id="thesis">

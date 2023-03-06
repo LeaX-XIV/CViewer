@@ -4,6 +4,9 @@ const terms = {
 	"en-EN": {
 		languageString: "English",
 
+		error: "ERROR",
+		invalidValue: "invalid value",
+
 		education: "Education",
 		training: "Training",
 		internationalExperiences: "International Experiences",
@@ -60,6 +63,9 @@ const terms = {
 	"it-IT": {
 		// cSpell: disable
 		languageString: "Italiano",
+
+		error: "ERRORE",
+		invalidValue: "valore invalido",
 
 		education: "Istruzione",
 		training: "Formazione",

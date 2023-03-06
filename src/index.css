@@ -148,10 +148,6 @@ a {
   margin-left: 30%;
 }
 
-span.tabulation{
-  margin-left: 40px;
-}
-
 .date-range, .date {
   display: flex;
   flex-direction: row;
@@ -187,6 +183,14 @@ span.tabulation{
 .container .right.content {
   /* margin-left: 1em; */
   padding: 1em;
+}
+
+.error {
+  background-color: darksalmon;
+  color: darkred;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 img.icon {

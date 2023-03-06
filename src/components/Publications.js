@@ -1,4 +1,4 @@
-import { orderNumbersDesc, extractYear } from "../utils";
+import { orderNumbersDesc, extractYear, capitalize } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -46,7 +46,14 @@ const Publication = ({date, title, authors, book, pages, issn, isbn}) => {
        authors?.length <= 0 ||
       !book
   ) {
-    return <></>;
+    return <>
+      <div className="left"></div>
+      <div className="content right error">
+        { dictionary.getTerm(lang, "error") }
+        <Separator type="colon" />
+        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+      </div>
+    </>;
   }
 
   return <>
