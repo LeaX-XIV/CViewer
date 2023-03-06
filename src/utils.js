@@ -1,7 +1,7 @@
 /**
- * 
+ * Returns the ISO format of the date (yyyy-MM-dd), or date.toString() if it is not a Date object.
  * @param {any} date - The date to format
- * @returns {string} The ISO format of the date (yyyy-MM-dd), or date.toString() if it is not a Date object
+ * @returns {string} A string representation of the date
  */
 function formatDate(date) {
   if (date instanceof Date) {
@@ -12,14 +12,13 @@ function formatDate(date) {
 }
 
 /**
- * 
  * Custom date ordering function for sort:
  *  > : -1,
  * == :  0,
  *  < : +1,
  * 
- * @param {int | Date} a - the first date/year
- * @param {int | Date} b - the second date/year
+ * @param {int | Date} a - The first date/year
+ * @param {int | Date} b - The second date/year
  * @returns {number} Descending ordering for a and b
  */
 function orderNumbersDesc(a, b) {
@@ -35,11 +34,25 @@ function orderNumbersDesc(a, b) {
 
 /**
  * Returns wether the passed string represents a ISO Date of a single number (year).
- * @param {int | Date} str - 
+ * @param {string} str - 
  * @returns {boolean}
  */
 function isYear(str) {
   return parseInt(str)?.toString().length === str?.length;
 }
 
-export { formatDate, orderNumbersDesc, isYear };
+/**
+ * Returns the year of the date, or the integer parsing if the parameter is not a parsable date.
+ * @param {string} date - A parsable date, or a year.
+ * @returns {int} The year of the date
+ */
+function extractYear(date) {
+  if (isYear(date)) {
+    return parseInt(date);
+  }
+
+  const d = new Date(date);
+  return d.getFullYear();
+}
+
+export { formatDate, orderNumbersDesc, isYear, extractYear };
