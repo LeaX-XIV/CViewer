@@ -85,7 +85,7 @@ const Degree = ({ studentNumber, startDate, endDate, courseOfStudy, location, th
         </div>
       </ConditionalComponent>
       <ConditionalComponent show={otherInfo}>
-        <div id="degree-other-info">{otherInfo}</div>
+        <div className="note" id="degree-other-info">{otherInfo}</div>
       </ConditionalComponent>
     </div>
   </>;
@@ -118,16 +118,7 @@ const Thesis = ({title, abstract, supervisors, }) => {
           <span>{dictionary.getTerm(lang, "supervisor")}</span> :
           <span>{dictionary.getTerm(lang, "supervisors")}</span>}
         <Separator type="colon" />
-        {
-          supervisors || []
-            .map((e, i) => 
-              <span
-                id={`thesis-supervisor-${i}`}
-                key={`thesis-supervisor-${i}`}>
-                {e}
-              </span>
-          )
-        }
+        { supervisors.join(", ") }
       </div>
     </ConditionalComponent>
   </div>;
