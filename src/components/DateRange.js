@@ -24,12 +24,12 @@ const DateRange = ({start, end}) => {
             </div>
           </div>
     }
-    if (!start) {
+    if (!start && end) {
         return <div className="date">
             {formatDate(endDate)}
           </div>
     }
-    if (!end) {
+    if (start && !end) {
       return <div className="date-range">
           <div className="date">
             {formatDate(startDate)}
