@@ -26,7 +26,11 @@ const LanguageSkills = ({ languageSkills }) => {
         <div className="subtitle left">{dictionary.getTerm(lang, "firstLanguage")}</div>
         <div className="content right" id="first-language">{languageSkills?.firstLanguage}</div>
       </ConditionalComponent>
+    </div>
+    <div className="container no-page-break">
       <OtherLanguagesTable otherLanguages={languageSkills?.otherLanguages} />
+    </div>
+    <div className="container">
       <ConditionalComponent show={languageSkills?.certificates && languageSkills?.certificates?.length > 0}>
         <div className="subtitle left">{dictionary.getTerm(lang, "certifications")}</div><div className="content right"></div>
         {
