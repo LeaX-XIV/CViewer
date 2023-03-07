@@ -1,4 +1,4 @@
-import { orderNumbersDesc, extractYear, capitalize } from "../utils";
+import { orderNumbersDesc, extractYear } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -6,6 +6,7 @@ import DictionaryContext from '../context/DictionaryContext';
 import LanguageContext from '../context/LanguageContext';
 import { DateRange } from "./DateRange";
 import { ConditionalComponent } from "./ConditionalComponent";
+import { ErrorContent } from "./ErrorContent";
 
 const Publications = ({ publications }) => {
   const dictionary = useContext(DictionaryContext);
@@ -49,9 +50,15 @@ const Publication = ({date, title, authors, book, pages, issn, isbn}) => {
     return <>
       <div className="left"></div>
       <div className="content right error">
-        { dictionary.getTerm(lang, "error") }
-        <Separator type="colon" />
-        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+        <ErrorContent obj={{
+                            date,
+                            title,
+                            authors,
+                            book,
+                            pages,
+                            issn,
+                            isbn
+                          }} />
       </div>
     </>;
   }

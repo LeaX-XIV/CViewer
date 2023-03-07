@@ -1,4 +1,4 @@
-import { orderNumbersDesc, capitalize } from "../utils";
+import { orderNumbersDesc } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -6,6 +6,7 @@ import DictionaryContext from '../context/DictionaryContext';
 import LanguageContext from '../context/LanguageContext';
 import { ConditionalComponent } from "./ConditionalComponent";
 import { DateRange } from "./DateRange";
+import { ErrorContent } from "./ErrorContent";
 
 const InternationalExperiences = ({ internationalExperiences }) => {
   const dictionary = useContext(DictionaryContext);
@@ -38,9 +39,6 @@ const InternationalExperiences = ({ internationalExperiences }) => {
 }
 
 const Experience = ({ startDate, endDate, programme, institute, location, country, description }) => {
-  const dictionary = useContext(DictionaryContext);
-  const lang = useContext(LanguageContext);
-  
   if (!programme &&
       !institute &&
       !location &&
@@ -49,9 +47,15 @@ const Experience = ({ startDate, endDate, programme, institute, location, countr
     return <>
       <div className="left"></div>
       <div className="content right error">
-        { dictionary.getTerm(lang, "error") }
-        <Separator type="colon" />
-        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+        <ErrorContent obj={{
+                            startDate,
+                            endDate,
+                            programme,
+                            institute,
+                            location,
+                            country,
+                            description
+                          }} />
       </div>
     </>;
   }

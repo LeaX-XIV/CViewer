@@ -1,10 +1,9 @@
-import { capitalize } from "../utils";
 import { useContext } from "react";
 import { SectionTitle } from "./Title";
 import DictionaryContext from '../context/DictionaryContext';
 import LanguageContext from '../context/LanguageContext';
 import { DateRange } from "./DateRange";
-import { Separator } from "./Separator";
+import { ErrorContent } from "./ErrorContent";
 
 const OtherInfo = ({ otherInfo }) => {
   const dictionary = useContext(DictionaryContext);
@@ -70,16 +69,11 @@ const Option = ({name, isOk}) => {
 }
 
 const ProfessionalLicense = ({date, description}) => {
-  const dictionary = useContext(DictionaryContext);
-  const lang = useContext(LanguageContext);
-
   if (!description) {
     return <>
       <div className="left"></div>
       <div className="content right error">
-        { dictionary.getTerm(lang, "error") }
-        <Separator type="colon" />
-        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+        <ErrorContent obj={{date, description}} />
       </div>
     </>;
   }

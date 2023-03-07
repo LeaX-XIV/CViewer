@@ -1,4 +1,4 @@
-import { orderNumbersDesc, capitalize } from "../utils";
+import { orderNumbersDesc } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -6,6 +6,7 @@ import DictionaryContext from '../context/DictionaryContext';
 import LanguageContext from '../context/LanguageContext';
 import { ConditionalComponent } from "./ConditionalComponent";
 import { DateRange } from "./DateRange";
+import { ErrorContent } from "./ErrorContent";
 
 const LanguageSkills = ({ languageSkills }) => {
   const dictionary = useContext(DictionaryContext);
@@ -123,16 +124,16 @@ const OtherLanguagesTable = ({ otherLanguages }) => {
 }
 
 const Certificate = ({date, certificate, language, grade}) => {
-  const dictionary = useContext(DictionaryContext);
-  const lang = useContext(LanguageContext);
-  
   if (!certificate && !language) {
     return <>
       <div className="left"></div>
       <div className="content right error">
-        { dictionary.getTerm(lang, "error") }
-        <Separator type="colon" />
-        { capitalize(dictionary.getTerm(lang, "invalidValue")) }
+        <ErrorContent obj={{
+                            date,
+                            certificate,
+                            language,
+                            grade
+                          }} />
       </div>
     </>;
   }
