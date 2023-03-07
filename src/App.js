@@ -5,10 +5,9 @@ import {useContext, useState} from 'react';
 import DictionaryContext from './context/DictionaryContext';
 import LanguageContext from './context/LanguageContext';
 
-
 const App = () => {
   const [cv, setCv] = useState();
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useState("en-EN");
   const [submit, setSubmit] = useState(false);
 
   function readCvFile(e) {
