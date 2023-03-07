@@ -84,9 +84,11 @@ const OtherLanguagesTable = ({ otherLanguages }) => {
       <tbody>
         {
           otherLanguages
-            .map((l, i) => <tr key={`other-language-${i}`}>
-                             <td>{l.language}</td>
-                           </tr>
+            .map((l, i) => <ConditionalComponent show={l.language}>
+                             <tr key={`other-language-${i}`}>
+                               <td>{l.language}</td>
+                             </tr>
+                           </ConditionalComponent>
             )
         }
       </tbody>
@@ -110,13 +112,15 @@ const OtherLanguagesTable = ({ otherLanguages }) => {
         <tbody>
           {
             otherLanguages
-              .map((l, i) => <tr key={`other-language-skill-${i}`}>
-                               <td>{l?.listening || "-"}</td>
-                               <td>{l?.reading || "-"}</td>
-                               <td>{l?.oralInteraction || "-"}</td>
-                               <td>{l?.oralProduction || "-"}</td>
-                               <td>{l?.writing || "-"}</td>
-                             </tr>
+              .map((l, i) => <ConditionalComponent show={l.language}>
+                               <tr key={`other-language-skill-${i}`}>
+                                 <td>{l?.listening || "-"}</td>
+                                 <td>{l?.reading || "-"}</td>
+                                 <td>{l?.oralInteraction || "-"}</td>
+                                 <td>{l?.oralProduction || "-"}</td>
+                                 <td>{l?.writing || "-"}</td>
+                               </tr>
+                             </ConditionalComponent>
               )
           }
         </tbody>
