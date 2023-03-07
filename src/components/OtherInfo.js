@@ -78,10 +78,10 @@ const ProfessionalLicense = ({date, description}) => {
     </>;
   }
 
-  return <div>
+  return <>
     <div className="left"><DateRange end={date} /></div>
     <div className="content right">{description}</div>
-  </div>;
+  </>;
 }
 
 export { OtherInfo };
