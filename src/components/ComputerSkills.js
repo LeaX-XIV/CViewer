@@ -72,16 +72,18 @@ const Skill = ({name, description, level}) => {
   const dictionary = useContext(DictionaryContext);
   const lang = useContext(LanguageContext);
 
-  if (!description) {
+  if (!description && !level) {
     return <></>;
   }
 
   return <>
     <div className="subtitle left">{dictionary.getTerm(lang, name)}</div>
     <div className="content right">
-      <div id="spreadsheet-skills-description">{description}</div>
+      <ConditionalComponent show={description}>
+        <div id="skills-description">{description}</div>
+      </ConditionalComponent>
       <ConditionalComponent show={level}>
-        <div id="spreadsheet-skills-level">
+        <div id="skills-level">
           <span>{dictionary.getTerm(lang, "level")}</span>
           <Separator type="colon" />
           <span>{level}</span>
