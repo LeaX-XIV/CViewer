@@ -1,4 +1,4 @@
-import { orderNumbersDesc, extractYear } from "../utils";
+import { orderDatesDesc, extractYear } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -18,7 +18,7 @@ const Publications = ({ publications }) => {
       <div className="container">
         {
           (publications || [])
-            .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
+            .sort((a, b) => orderDatesDesc(a.endDate, b.endDate))
             .map((p, i) => 
               <Publication
                 date={p?.date}

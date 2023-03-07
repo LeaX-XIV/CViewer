@@ -1,4 +1,4 @@
-import { orderNumbersDesc } from "../utils";
+import { orderDatesDesc } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -24,7 +24,7 @@ const Education = ({ education }) => {
     <div className="container">
       {
         (education?.universityDegrees || [])
-          .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
+          .sort((a, b) => orderDatesDesc(a.endDate, b.endDate))
           .map((d, i) => <Degree 
                           key={`university-degree-${i}`}
                           studentNumber={d?.studentNumber}

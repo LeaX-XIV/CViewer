@@ -1,4 +1,4 @@
-import { orderNumbersDesc } from "../utils";
+import { orderDatesDesc } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -18,7 +18,7 @@ const Trainings = ({ trainings }) => {
       <div className="container">
         {
           trainings
-            .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
+            .sort((a, b) => orderDatesDesc(a.endDate, b.endDate))
             .map((t, i) => 
               <Training
                 key={`training-${i}`}

@@ -1,4 +1,4 @@
-import { orderNumbersDesc } from "../utils";
+import { orderDatesDesc } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -35,7 +35,7 @@ const LanguageSkills = ({ languageSkills }) => {
         <div className="subtitle left">{dictionary.getTerm(lang, "certifications")}</div><div className="content right"></div>
         {
           (languageSkills?.certificates || [])
-            .sort((a, b) => orderNumbersDesc(a.date, b.date))
+            .sort((a, b) => orderDatesDesc(a.date, b.date))
             .map((c, i) => 
               <Certificate
                 key={`certificate-${i}`}

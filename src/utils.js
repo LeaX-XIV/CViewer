@@ -21,7 +21,7 @@ function formatDate(date) {
  * @param {int | Date} b - The second date/year
  * @returns {number} Descending ordering for a and b
  */
-function orderNumbersDesc(a, b) {
+function orderDatesDesc(a, b) {
   //  > -1
   // ==  0
   //  < +1
@@ -29,7 +29,7 @@ function orderNumbersDesc(a, b) {
   if (!a && !b) return  0;
   if (!a &&  b) return -1; 
   if ( a && !b) return +1; 
-  return b - a;
+  return new Date(b) - new Date(a);
 }
 
 /**
@@ -64,4 +64,4 @@ function capitalize(str) {
   return str[0].toUpperCase() + str.substring(1);
 }
 
-export { formatDate, orderNumbersDesc, isYear, extractYear, capitalize };
+export { formatDate, orderDatesDesc, isYear, extractYear, capitalize };

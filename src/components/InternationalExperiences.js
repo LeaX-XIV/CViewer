@@ -1,4 +1,4 @@
-import { orderNumbersDesc } from "../utils";
+import { orderDatesDesc } from "../utils";
 import { useContext } from "react";
 import { Separator } from "./Separator";
 import { SectionTitle } from "./Title";
@@ -21,7 +21,7 @@ const InternationalExperiences = ({ internationalExperiences }) => {
     <div className="container">
       {
         (internationalExperiences || [])
-          .sort((a, b) => orderNumbersDesc(a.endDate, b.endDate))
+          .sort((a, b) => orderDatesDesc(a.endDate, b.endDate))
           .map((e, i) => <Experience
                             key={`international-experience-${i}`}
                             startDate={e?.startDate}
