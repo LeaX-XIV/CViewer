@@ -15,8 +15,9 @@ import { OtherInfo } from "./components/OtherInfo";
 import { Publications } from "./components/Publications";
 import { Conferences } from "./components/Conferences";
 
-const CViewer = ({cv}) => {
+const CViewer = ({cv, reset}) => {
   return <>
+    <button className="button invisible home-button" onClick={reset}>Home</button>
     <div className="visible">
       <PersonalInfo personalInfo={cv.personalInfo} />
       <Education education={cv.education} />

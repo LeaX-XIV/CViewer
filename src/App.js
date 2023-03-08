@@ -10,6 +10,11 @@ const App = () => {
   const [lang, setLang] = useState("en-EN");
   const [submit, setSubmit] = useState(false);
 
+  function reset() {
+    setCv(null);
+    setSubmit(null);
+  }
+
   function readCvFile(triggerEv) {
     triggerEv.preventDefault();
     const fileReader = new FileReader();
@@ -30,7 +35,7 @@ const App = () => {
 
   return submit && cv ?
     <LanguageContext.Provider value={lang}>
-      <CViewer cv={cv} />
+      <CViewer cv={cv} reset={reset} />
     </LanguageContext.Provider> :
     <div>
       <input type={"file"} 
