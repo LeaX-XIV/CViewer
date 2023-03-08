@@ -10,17 +10,19 @@ const App = () => {
   const [lang, setLang] = useState("en-EN");
   const [submit, setSubmit] = useState(false);
 
-  function readCvFile(e) {
-    e.preventDefault();
+  function readCvFile(triggerEv) {
+    triggerEv.preventDefault();
     const fileReader = new FileReader();
-    fileReader.readAsText(e.target.files[0], 'UTF-8');
-    fileReader.onload = e => {
+    fileReader.readAsText(triggerEv.target.files[0], 'UTF-8');
+    fileReader.onload = readEv => {
+      // Preserve old value in case of error
+      let cvObj = cv;
       try {
-        const cvObj = JSON.parse(e.target.result);
-        setCv(cvObj);
-      } catch(e) {
-        console.error(e.message);
+        cvObj = JSON.parse(readEv.target.result);
+      } catch(ex) {
+        console.error(ex.message);
       }
+      setCv(cvObj);
     }
   }
 
