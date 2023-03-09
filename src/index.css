@@ -257,6 +257,14 @@ img.filter-blueviolet {
   border-radius: 10px;
   padding: 0.5em;
   background-color: inherit;
+  transition: 0.3s;
+}
+
+.button:hover {
+  background-color: blueviolet;
+  color: white;
+  border-color: white;
+  cursor: pointer;
 }
 
 .home-button {
