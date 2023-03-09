@@ -265,6 +265,7 @@ img.filter-blueviolet {
 
 .button {
   border: 2px solid blueviolet;
+  width: 5rem;
   font-size: large;
   color: blueviolet;
   border-radius: 10px;

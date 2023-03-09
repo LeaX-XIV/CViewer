@@ -7,6 +7,9 @@ const terms = {
 		error: "ERROR",
 		invalidValue: "invalid value",
 
+		uploadCV: "Upload your CV",
+		submit: "Submit",
+
 		education: "Education",
 		training: "Training",
 		internationalExperiences: "International Experiences",
@@ -66,6 +69,9 @@ const terms = {
 
 		error: "ERRORE",
 		invalidValue: "valore invalido",
+
+		uploadCV: "Carica il tuo CV",
+		submit: "Invia",
 
 		education: "Istruzione",
 		training: "Formazione",

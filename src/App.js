@@ -15,17 +15,22 @@ const App = () => {
     setSubmit(null);
   }
 
-  return submit && cv ?
-    <LanguageContext.Provider value={lang}>
-      <CViewer cv={cv} reset={reset} />
-    </LanguageContext.Provider> :
-    <Home
-      setLang={l => setLang(l)}
-      getCv={() => JSON.parse(JSON.stringify(cv))}
-      setCv={c => setCv(c)}
-      doSubmit={() => setSubmit(true)}
-      isSubmitDisabled={!cv}
-      />
+  return <LanguageContext.Provider value={lang}>
+    {
+      submit && cv ?
+        <CViewer 
+          cv={cv}
+          reset={reset}
+          /> :
+        <Home
+          setLang={l => setLang(l)}
+          getCv={() => JSON.parse(JSON.stringify(cv))}
+          setCv={c => setCv(c)}
+          doSubmit={() => setSubmit(true)}
+          isSubmitDisabled={!cv}
+          />
+    }
+  </LanguageContext.Provider>
 }
 
 export default App;

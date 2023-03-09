@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import DictionaryContext from "./context/DictionaryContext";
+import LanguageContext from "./context/LanguageContext";
 
 const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
   const dictionary = useContext(DictionaryContext);
+  const lang = useContext(LanguageContext)
   
   let [filename, setFilename] = useState(null);
   
@@ -30,7 +32,7 @@ const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
         accept={"application/json"}
         onChange={readCvFile}
       />
-      {filename ? filename : "Upload your CV"}
+      {filename ? filename : dictionary.getTerm(lang, "uploadCV")}
     </label>
     <select 
       className="custom-input button"
@@ -53,6 +55,7 @@ const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
       type="submit"
       onClick={doSubmit}
       disabled={isSubmitDisabled}
+      value={dictionary.getTerm(lang, "submit")}
       />
   </div>;
 }
