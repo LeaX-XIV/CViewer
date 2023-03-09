@@ -1,8 +1,10 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import DictionaryContext from "./context/DictionaryContext";
 
 const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
-  const context = useContext(DictionaryContext);
+  const dictionary = useContext(DictionaryContext);
+  
+  let [filename, setFilename] = useState(null);
   
   function readCvFile(triggerEv) {
     triggerEv.preventDefault();
@@ -17,23 +19,31 @@ const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
         console.error(ex.message);
       }
       setCv(cvObj);
+      setFilename(triggerEv.target.files[0].name);
     }
   }
 
-  return <>
-    <input 
-      type={"file"} 
-      accept={"application/json"}
-      onChange={readCvFile}
+  return <div className="center">
+    <label className="custom-input button">
+      <input 
+        type={"file"} 
+        accept={"application/json"}
+        onChange={readCvFile}
       />
-    <select onChange={e => setLang(e.target.value)} defaultValue="en-EN">
+      {filename ? filename : "Upload your CV"}
+    </label>
+    <select 
+      className="custom-input button"
+      onChange={e => setLang(e.target.value)}
+      defaultValue="en-EN"
+      >
     {
-      context.getLangs().map((l, i) => 
+      dictionary.getLangs().map((l, i) => 
         <option 
           value={l}
           key={`language-option-${i}`}
           >
-        { context.getTerm(l, "languageString") }
+        { dictionary.getTerm(l, "languageString") }
         </option>
       )
     }
@@ -44,7 +54,7 @@ const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
       onClick={doSubmit}
       disabled={isSubmitDisabled}
       />
-  </>;
+  </div>;
 }
 
 export {Home};

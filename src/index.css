@@ -28,6 +28,10 @@ a {
   text-decoration: inherit;
 }
 
+input, select, label {
+  margin: 0.5em 0.5em;
+}
+
 @page {
   size: A4 portrait;
   margin: 11mm 17mm 17mm 17mm;
@@ -64,6 +68,15 @@ a {
 
 .subtitle.left {
   font-weight: bold;
+}
+
+.center {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .visible {
@@ -217,7 +230,7 @@ img.filter-blueviolet {
   width: auto;
   aspect-ratio: 1/1;
   object-fit: cover;
-  /* border-radius: 50%; */
+  border-radius: 50%;
 }
 
 .separator {
@@ -251,7 +264,7 @@ img.filter-blueviolet {
 }
 
 .button {
-  border-color: blueviolet;
+  border: 2px solid blueviolet;
   font-size: large;
   color: blueviolet;
   border-radius: 10px;
@@ -263,7 +276,7 @@ img.filter-blueviolet {
 .button:hover {
   background-color: blueviolet;
   color: white;
-  border-color: white;
+  /* border-color: white; */
   cursor: pointer;
 }
 
@@ -272,4 +285,14 @@ img.filter-blueviolet {
   margin-top: 20px;
   margin-left: 40px;
   z-index: 1;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-input {
+  display: inline-block;
+  width: 10em;
+  text-align: center;
 }
