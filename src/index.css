@@ -73,7 +73,7 @@ input, select, label {
 .center {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -277,8 +277,19 @@ img.filter-blueviolet {
 .button:hover {
   background-color: blueviolet;
   color: white;
-  /* border-color: white; */
   cursor: pointer;
+  border-radius: 20px;
+}
+
+.button:disabled, button[disabled] {
+  border: 2px solid blueviolet;
+  background-color: inherit;
+  color: blueviolet;
+  width: 5rem;
+  font-size: large;
+  border-radius: 0px;
+  padding: 0.5em;
+  cursor: not-allowed;
 }
 
 .home-button {

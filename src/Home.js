@@ -39,22 +39,24 @@ const Home = ({setLang, getCv, setCv, doSubmit, isSubmitDisabled}) => {
       onChange={e => setLang(e.target.value)}
       defaultValue="en-EN"
       >
-    {
-      dictionary.getLangs().map((l, i) => 
-        <option 
-          value={l}
-          key={`language-option-${i}`}
-          >
-        { dictionary.getTerm(l, "languageString") }
-        </option>
-      )
-    }
+      {
+        dictionary.getLangs().map((l, i) => 
+          <option
+            className="custom-input"
+            value={l}
+            key={`language-option-${i}`}
+            >
+          { dictionary.getTerm(l, "languageString") }
+          </option>
+        )
+      }
     </select>
     <input
       className="button"
       type="submit"
       onClick={doSubmit}
       disabled={isSubmitDisabled}
+      // style={{opacity: isSubmitDisabled ? "0%" : "100%"}}
       value={dictionary.getTerm(lang, "submit")}
       />
   </div>;
