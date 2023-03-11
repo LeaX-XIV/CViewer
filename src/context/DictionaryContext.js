@@ -92,7 +92,7 @@ const terms = {
 		abstract: "Abstract",
 		supervisor: "Relatore",
 		supervisors: "Relatori",
-		certificationObtained: "Certificazione ottenuta",
+		certificationObtained: "Attestazione conseguita",
 		firstLanguage: "Prima lingua",
 		otherLanguages: "Alte lingue",
 		understanding: "Comprensione",
