@@ -126,7 +126,7 @@ const OtherLanguagesTable = ({ otherLanguages }) => {
         </tbody>
       </table>
       <div className="note">{dictionary.getTerm(lang, "languageLevelsDescriptor")}</div>
-      <div className="note"><a target="_blank" rel="noreferrer noopener" href="https://europass.cedefop.europa.eu/resources/european-language-levels-cefr">{dictionary.getTerm(lang, "referenceLanguage")}</a></div>
+      <div className="note"><a target="_blank" rel="noreferrer noopener" href={`https://europa.eu/europass/en/common-european-framework-reference-language-skills`}>{dictionary.getTerm(lang, "referenceLanguage")}</a></div>
     </div>
   </>;
 }
